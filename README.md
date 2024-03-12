@@ -45,4 +45,91 @@ var     : 프로그램이 사용할 값들 데이터
 ## 파일 경로와 순회
 pwd     현재 디렉토리 경로를 출력
 ls      디렉토리 목록 나열
-cd      디렉토리를 변경 
+cd      디렉토리를 변경
+
+"~" 이 기호는 내(로그인한) 홈 디렉토리
+내 홈 디렉토리 가고 싶을때 cd ~
+
+상위로 이동
+cd ../
+
+두단계 위로
+cd ../../
+
+## ls
+ls      경로의 파일들 보기
+ls -l   자세히
+man ls  ls 의 도움말
+
+## 파일시스템을 위한 명령어들
+mkdir   디렉토리 생성
+rmdir   디렉토리삭제
+touch   빈 파일 생성
+mv      파일 이동 / 변경
+rm      파일 삭제
+cp      파일 복사
+
+# ls -l 입력시 파일과 디렉토리 차이
+drwxrwxr-x  workspace : 앞 D 가 디렉토리 의미
+-rw-rw-r--  test.txt  : 앞 에 아무것도 없으면 파일
+
+# mv
+mv {대상 파일 } { 이동 위치}
+mv test.txt workspace/
+
+# rm
+rm -r workspace/    :   디렉토리 안쪽의 모든 파일 (recursive)
+rm -ri aa           :   상호작용을 추가하여 방어로직
+
+# cp
+cp text.txt test.cpy
+
+## 파일 편집 및 관리
+
+# 편집기
+vi          :
+GNU nano    :   트렌드하게 많이 쓰는것
+Emacs       :
+ed/ex       :
+
+# vi
+
+쉘 > vi 명령 모드 > 편집 > esc > :
+
+쉘
+vi name
+vi +n name
+vi -r name
+
+vi 명령모드
+i   :   *많이 쓴다 insert 모드 (현재 위치)
+l
+a   :   *현재위치 뒤에
+A
+o   :   *다음라인에 넣기
+yy  :   한 줄 복사
+yw  :   단어 복사
+yl  :   문자 복사
+p   :   붙여넣기
+
+
+이동키
+<- : h
+-> : l
+위 : k
+아래 : j
+
+편집
+
+esc : 편집모드 종료
+
+:명령어
+q   :   나가기
+w   :   저장
+wq  :   저장하고 나가기
+
+# nano
+^ : ctrl 키를 의미
+
+nano 파일명
+editor 파일명

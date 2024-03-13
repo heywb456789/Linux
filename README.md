@@ -57,9 +57,15 @@ cd ../
 cd ../../
 
 ## ls
+man ls  ls 의 도움말
 ls      경로의 파일들 보기
 ls -l   자세히
-man ls  ls 의 도움말
+
+hello.java hello1.java hello2.java
+있을때
+ls hello[12].java 하면
+hello1.java , hello2.java 나온다.
+
 
 ## 파일시스템을 위한 명령어들
 mkdir   디렉토리 생성
@@ -133,3 +139,34 @@ wq  :   저장하고 나가기
 
 nano 파일명
 editor 파일명
+
+## 파일 찾기와 파일정보
+
+# 파일 찾기
+메뉴얼 = man find
+find ./ -name *.java                            :   현재 디렉토리에서 파일 네임이 .java로 끝나는 파일
+find . -name *.java -size +1c[옵션있다]          :   현재 디렉토리에서 사이즈가 1바이트 이상 (-1 : 1이하 )
+find / -name *.java                             :   루트 디렉토리에서 전체 다 찾아라 -> 권한 수준을 체크하여 노출 없으면 permission denied
+
+# 파일의 정보
+
+cat
+cat [파일이름]
+
+haed
+head -n2 [파일이름] : 위에서 두 줄
+
+tail
+tail -n2 [파일이름] : 뒤에서 두 줄
+
+grep
+grep [찾을 내용] [파일이름]
+grep -i "hello" hello.java 대 소문자 무시
+
+cmp : 파일내용 비교 차이나는 라인 출력
+cmp hello.java hello2.java
+
+diff : 차이점 소스 노출
+diff hello.java hello2.java
+
+file : 파일의 내용을 출력해준다.

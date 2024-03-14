@@ -56,7 +56,7 @@ cd ../
 두단계 위로
 cd ../../
 
-## ls
+### ls
 man ls  ls 의 도움말
 ls      경로의 파일들 보기
 ls -l   자세히
@@ -75,30 +75,30 @@ mv      파일 이동 / 변경
 rm      파일 삭제
 cp      파일 복사
 
-# ls -l 입력시 파일과 디렉토리 차이
+### ls -l 입력시 파일과 디렉토리 차이
 drwxrwxr-x  workspace : 앞 D 가 디렉토리 의미
 -rw-rw-r--  test.txt  : 앞 에 아무것도 없으면 파일
 
-# mv
+### mv
 mv {대상 파일 } { 이동 위치}
 mv test.txt workspace/
 
-# rm
+### rm
 rm -r workspace/    :   디렉토리 안쪽의 모든 파일 (recursive)
 rm -ri aa           :   상호작용을 추가하여 방어로직
 
-# cp
+### cp
 cp text.txt test.cpy
 
 ## 파일 편집 및 관리
 
-# 편집기
+## 편집기
 vi          :
 GNU nano    :   트렌드하게 많이 쓰는것
 Emacs       :
 ed/ex       :
 
-# vi
+### vi
 
 쉘 > vi 명령 모드 > 편집 > esc > :
 
@@ -134,7 +134,7 @@ q   :   나가기
 w   :   저장
 wq  :   저장하고 나가기
 
-# nano
+### nano
 ^ : ctrl 키를 의미
 
 nano 파일명
@@ -142,13 +142,13 @@ editor 파일명
 
 ## 파일 찾기와 파일정보
 
-# 파일 찾기
+### 파일 찾기
 메뉴얼 = man find
 find ./ -name *.java                            :   현재 디렉토리에서 파일 네임이 .java로 끝나는 파일
 find . -name *.java -size +1c[옵션있다]          :   현재 디렉토리에서 사이즈가 1바이트 이상 (-1 : 1이하 )
 find / -name *.java                             :   루트 디렉토리에서 전체 다 찾아라 -> 권한 수준을 체크하여 노출 없으면 permission denied
 
-# 파일의 정보
+### 파일의 정보
 
 cat
 cat [파일이름]
@@ -231,7 +231,7 @@ ln hello helloln : 하드 링크 파일 생성
 Helloln 을 수정하면 원본도 수정된다.
 원본을 지워도 링크 파일은 남아있다. (링크 파일을 지워도 원본은 남아있다)
 
-# 링크파일을 이용한 실행파일 리졸빙
+## 링크파일을 이용한 실행파일 리졸빙
 $~/download/jdk1.8.0_161/bin/javac -version -> 자바 버전이 나온다
 ~/download/jdk1.8.0_161/bin/$ javac -version -> 자바 버전이 나오지 않는다(resolving Error)
 
@@ -257,15 +257,101 @@ ls -l 실행시 실행파일의 실제 경로와 파일타입 확인 가능
 
 # 사용자가 여러명인( 프로필이) 환경에서 글로벌로 등록하기
 
-1) 사용자 추가하기
+1. 사용자 추가하기
     useradd : 사용자 추가
         useradd dragon : dragon 사용자 추가
     usermod : 사용자 변경
     userdel : 사용자 삭제
 
-    루트 환경의 설정파일을 저장하는 etc 디렉토리에서 확인가능
+    사용자는 루트 환경의 설정파일을 저장하는 etc 디렉토리에서 확인가능
     cat /etc/psswd 또는 tail -n2 /etc/passwd
 
     비밀번호 추가
     sudo passwd dragon
     
+    **
+    tail -n3 /etc/passwd ->
+    dragon:x:1001:1001::  id :: group 이다.
+
+    이 상태로 로그인시 홈 디렉토리가 없기 때문에 경로가 안잡힌다
+    sudo mkdir /home/dragon 사용자 별로 디렉토리를 만들어준다.
+    소유자와 소유그룹을 지정해줘야 dragon으로 작업이 가능
+                 소유자    그룹
+    -rw-rw-r-- 1 root     root     9717760 Jan  1  2024 test.tar
+
+    소유자 변경
+    sudo chown [소유자] [디렉토리경로]
+    sudo chown dragon  /home/testuser
+    sudo chown [소유자:그룹] [디렉토리경로]
+    sudo chown dragon:dragon  /home/testuser
+
+2. 사용자를 추가하는 스크립트 파일 생성하여 쉽게 처리하기
+    ~bin/adduser
+
+    >useradd testuser
+    tail -n2 /etc/passwd
+    mkdir /home/testuser
+    chown testuser:testuser /home/testuser
+    echo "testuser user added"
+
+    파일 생성후 실행 권한을 부여하여 실행파일로 만든다
+    chmod [option] mode[mode] file
+    -rwxr-xr-x text.txt
+    "-" 파일의 타입
+    3비트씩 끊어서 다음에 대한 정보를 표현
+    rwx 소유자의 권한
+    r-x 소유그룹의 권한
+    r-x other의 권한
+
+    r(100) : read , w(010) : write , x(001) : execute
+    ex) 소유자에게 모든 권한, 그룹에 모든 권한, other에 모든 권한
+    chmod 777 test.txt
+    chmod [대상] [+-권한]
+    대상 : u :user , g : group , o : other , a : all
+    모두에게 rwx
+    chmod a+rwx text.txt
+
+3. 인자를 이용한 스크립트 파일로 변경
+    ~bin/adduser
+
+    useradd $1
+    tail -n2 /etc/passwd
+    mkdir /home/$1
+    chown $1:$1 /home/$1
+    echo "$1 user added"
+
+    adduser test2user  -> adduser param1($1) param2($2) param3($3)
+
+    *whereis adduser : adduser 가 있는곳
+    which adduser : 실행되는 adduser , sudo which adduser : sudo 권한으로 실행되는 adduser
+
+3.1. 향상된 사용자 추가 명령어
+리눅스 에서 제공하는 스크립트
+adduser , deluser
+
+## 사용자 프롬프트 설정하기
+ps1="$"
+ps1="\d$" : 날짜 포함
+ps1="\t$" : 시 포함
+
+## 색상 변경
+LS_COLORS = "di=0;33"
+
+di = directory
+fi = file
+in = symbolic link
+pi = fifo file
+so = socket file
+bd = block special file
+
+텍스트 형식
+0 = default color
+1 = bold
+4 = underline
+5= flashing text
+7 = reverse
+
+텍스트 색상표
+33 = orange 1= red .... 검색해보자
+
+## 명령어 별칭

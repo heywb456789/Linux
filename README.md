@@ -214,6 +214,58 @@ tar -zxvf [파일명.tar.gz]
 -p  :   파일 권한을 저장
 -c  :   경로를 지정
 
+## JDK 다운로드
+웹에서 다운 받을때 "wget"
+.tar 받아서 압축풀기
 
+## 링크파일
+ls -l 입력시
+l.... 으로 시작하면 링크파일 (exe 파일)
 
-aa
+링크 파일 만들기
+ln [option].. target [...] [linkName[...]]
+sybolic Link : option -s 부여하여 생성 파일 타입 l 원본과 다른 크기와 다른 생성일을 가지는 별도의 파일
+hardlink: 원본과 똑같은 크기와 똑같은 생성일을 가진다.
+
+ln hello helloln : 하드 링크 파일 생성
+Helloln 을 수정하면 원본도 수정된다.
+원본을 지워도 링크 파일은 남아있다. (링크 파일을 지워도 원본은 남아있다)
+
+# 링크파일을 이용한 실행파일 리졸빙
+$~/download/jdk1.8.0_161/bin/javac -version -> 자바 버전이 나온다
+~/download/jdk1.8.0_161/bin/$ javac -version -> 자바 버전이 나오지 않는다(resolving Error)
+
+리눅스는 명령어를 사용하면 실행파일을 찾는 resolving이 일어난다.
+현재의 디렉토리에서도 파이을 찾지 않고
+$PATH 에 등록된 환경변수의 경로에서 실행 파일을 찾는다
+이러한 문제를 해결하기 위해서 링크 파일( 심볼릭)로 해결가능
+
+~/download/jdk1.8.0_161/bin/$ java -version
+리졸빙 에러
+~/download/jdk1.8.0_161/bin/$ ./java -version
+실행 된다.
+
+리졸빙 에러는 echo $PATH 를 치면 나오는 경로에 실행 파일이 있는지 찾아본다.
+현재는 없어서 에러
+
+링크파일(심볼릭) 생성으로 해결하기
+생성하려는 홈의 bin으로 이동 후 ($PATH 에 홈 디렉토리 bin이 등록되어있어서)
+ln -s ~/경로/java java
+ls -l 실행시 실행파일의 실제 경로와 파일타입 확인 가능
+
+이후 javac hello.java -> .class 생성 -> java hello.class 등으로 사용가능
+
+# 사용자가 여러명인( 프로필이) 환경에서 글로벌로 등록하기
+
+1) 사용자 추가하기
+    useradd : 사용자 추가
+        useradd dragon : dragon 사용자 추가
+    usermod : 사용자 변경
+    userdel : 사용자 삭제
+
+    루트 환경의 설정파일을 저장하는 etc 디렉토리에서 확인가능
+    cat /etc/psswd 또는 tail -n2 /etc/passwd
+
+    비밀번호 추가
+    sudo passwd dragon
+    

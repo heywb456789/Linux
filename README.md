@@ -216,3 +216,4 @@ tar -zxvf [파일명.tar.gz]
 
 
 
+aa

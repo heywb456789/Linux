@@ -170,3 +170,49 @@ diff : 차이점 소스 노출
 diff hello.java hello2.java
 
 file : 파일의 내용을 출력해준다.
+
+## 유용한 명령어
+history  : 지금까지 사용한 명령어
+
+history -> 번호 체크 - > "!96" 이렇게 사용하면 해당 번호의 명령어 실행
+
+">"  : 파일로 출력하기
+hello.java > test.txt
+
+echo : 화면에 출력하기
+echo "hello" > test  : 파일로 출력
+echo "okay" >> test : 덮어쓰기가 아니라 이어서 작성
+
+|
+cat test | ? : cat test 결과가 ?로 하이픈
+cat test | grep he
+ls -l | less
+cat test | sort -r : 하이픈
+
+;
+touch test1 ; echt "okay~" >> test1 ; cat test1
+
+## 파일 압축 관리
+tar  : tape Archive
+
+압축하기
+tar -cf [파일명.tar] [같이 묶일 파일 a,b,c]
+tar -zcf   [파일명.tar.gz] [같이 묶일 파일]
+tar -cf test.tar *
+tar -cf test.tar *.java
+
+압축 풀기
+tar -xvf [파일명.tar]
+tar -zxvf [파일명.tar.gz]
+
+-f  :   파일이름 지정
+-c  :   파일을 tar로 묶음
+-x  :   tar 압축을 푼다.
+-v  :   내용을 자세히 출력
+-z  :   gzip으로 압축하거나 해제함
+-t  :   목록 출력
+-p  :   파일 권한을 저장
+-c  :   경로를 지정
+
+
+

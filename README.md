@@ -355,3 +355,27 @@ bd = block special file
 33 = orange 1= red .... 검색해보자
 
 ## 명령어 별칭
+type ll : ls -alF의 별칭
+
+alias 추가
+alias ls = 'ls -l'
+
+기본적으로 프로필에 적용한것이 아니기 때문에 로그아웃하고 들어오면 초기화 된다.
+
+## 컴퓨터 켜고 끄기와 Run Level
+초기화 스크립트 작성 위치
+1) BIOS
+2) Master Boot Record (MBR)
+3) LILO or GRUB : 운영체제 선택기
+4) Kernel
+5) init: process number 1(PID = 1)
+    -/linuxrc : load modules / initialize devices / exits
+    -/sbin/init
+        -/etc/inittab : run boot scripts
+            -/etc/init.d/rcS
+                -/etc/rcS.d/S* scripts
+                -/ect/rc.boot/*
+6) Run Levels
+    /etc/rc0.d rc1.d...... 등이 있다.
+
+34강 10분 

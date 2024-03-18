@@ -378,4 +378,75 @@ alias ls = 'ls -l'
 6) Run Levels
     /etc/rc0.d rc1.d...... 등이 있다.
 
-34강 10분 
+정상적으로 실행되면 런 레벨 3
+
+## 프로필과 환경변수를 설정하는 방법
+
+로그인 할 때 실행되는 스크립트
+
+1) Bash 시작 스크립트
+2) 로그인 쉘 (/bin/login)
+    first user log in runlevel #3
+        - /etc/profile  : 모든 사용자가 이 설정으로 진행된 후에
+        - ~/.profile (숨김 파일 ) : 개인 사용자 별로 생성된 프로필로 재정의
+
+    환경변수 적용법
+        (1). etc/profile 직접 수정
+        (2). etc/profile.d/*.sh 에 쉘 스크립트 파일 생성
+        (3). 개인화된 프로필 별 ./profile
+    환경변수 적용후에는 source 로 파일을 재 실행하던가
+    재 로그인을 해야한다.
+3) 비 로그인 쉘
+    /bin/bash or /bin/su or termianl
+    virtual terminal run
+
+*PAM pluggable Authentication Modules
+
+인증의 필요한 데이터를 공통화
+
+## 시스템 수준의 JDK 설치하기
+sudo nano etc/environment 에서 수정
+
+## debian 설치 패키지 관리자
+dpkg -l  : 설치된 패키지
+dpkg -l [패키지명] : 패키지 관련 상세
+dpkg -L [패키지명] : 패키지가 설치된 경로
+sudo dpkg -r [패키지명] : 패키지 지우기 (실행파일만)
+sudo dpkg -P [패키지명] : 패키지 지우기 (설정파일 포함)
+sudo dpkg -i [경로+ 실행파일] : 설치
+
+## 향상된 패키지 관리도구 APT(Advanced Packaging Tool)
+
+/etc/apt/source.list 에 패키지 리스트 있다.
+
+apt-get update 리스트 최신화
+apt-get dist-update 리스트 의존성 까지 추가하여 최신화
+apt-get install [패키지] 설치
+apt-get remove [패키지] 제거
+apt-get-purge [패키지] 설정파일까지 제거
+
+apt-cache : 저장소 목록을 저장
+apt-cache search [패키지] 패키지 정보 여부 확인
+apt-cache show [패키지] 패키지 상세 정보
+apt-pkgnames : 현재 설치 가능한 패키지 네임들
+apt-pkgnames | less : 리스트 끊어서 노출
+apt-pkgnames search [패키지 or 검색]
+
+## PPA(Personal Package Archive) 를 이용한 JDK 설치 방법
+
+add-apt-repository ppa:  : 리파지토리 추가하는 명령어
+apt-get update : update는 필수적으로 진행하여야 한다.
+
+add-apt-repository ppa:openjdk-r/ppa : 소스 리스팅 추가
+sudo apt-get update : 리스팅된것을 업데이트하여 반영
+
+update-java-alternatives -l
+
+설치된 jdk 들
+
+sudo update-java-alternatives -s [바꾸려는 자바 jdk ]
+
+## 링크 관리 도구 update-alternatives
+
+
+

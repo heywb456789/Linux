@@ -448,5 +448,10 @@ sudo update-java-alternatives -s [바꾸려는 자바 jdk ]
 
 ## 링크 관리 도구 update-alternatives
 
+실행파일(링크파일)을 기존에 $PATH 에 추가하는 방법이나 기존에 설정된 경로에 파일을 추가하는 방법 보다
+효과 적으로 관리하기 위해 사용
+
+40강 5분 
+
 
 

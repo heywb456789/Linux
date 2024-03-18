@@ -450,8 +450,70 @@ sudo update-java-alternatives -s [바꾸려는 자바 jdk ]
 
 실행파일(링크파일)을 기존에 $PATH 에 추가하는 방법이나 기존에 설정된 경로에 파일을 추가하는 방법 보다
 효과 적으로 관리하기 위해 사용
+                               [경로]  [이름] [링크 대상 파일]
+update-alternatives --install ~/bin/bb bb ~/tes1.sh 1
+update-alternatives --install ~/bin/bb bb ~/tes2.sh 2
 
-40강 5분 
+update-java-alternatives 자바 전용 링크 관리
+
+## 텔넷 서비스 사용하기
+
+dpkg -s telnetd
+
+apt search telnetd // 설치 가능한지 체크
+
+sudo apt install telnetd //설치하기
+
+텔넷 클라이언트 설치하기
+window 기능 켜기/끄기 에서 텔넷 클라이언트 설치
+
+vm 가상서버에서 ifconfig로 ip 조회후 telnet 을 해보면 접속이 안된다.
+
+10.0.2.15로 나오는데 이것은 사설망이라 그렇다.
+
+211.238.xxx.111 등의 형태의 IP가 전 세계적으로 식별가능한 IP
+
+192.168.0.4 .. 와 같은 형태의 IP는 공유기가 물려있는 네트워크안에서의 식별자 IP
+
+결국 192.168.0.4 등과 같은 서버에서 vm을 가동시키고 텔넷 서비스를 기동 시키려면 포트포워딩을 통해 열어준
 
 
+telnet은 23번 포트를 사용한다.
+vm-> 설정 -> 네트워크 포트포워딩 -> TCP 프로토콜의 ->호스트 포트 23 ->게스트 IP 10.0.2.15 -> 게스트 포트 23
 
+telnet [ip] 23 -> 우분투 접속 성공
+
+## 텔넷 서비스의 취약점, IP spoofing, DNS poisoning , ssh
+
+취약점
+ipspoofing : 패킷등을 위조하여 송신자 주소를 바꿔서 보내더라도 알 수 있는 방법이 없다.
+DNS poisoning : DNS 에서 네임서버로 제공하는 IP를 조회하고 이 정보를 캐시하는데 이때 잘못된 정보를 전송하여 강제로 캐싱하게끔
+ 설정하여 보안적인 이슈를 만들어 내는것
+SSH : 키를 가지고 데이터를 주고 받는 방식 보안적으로 우수
+
+## SSH 설치와 putty 다운로드 및 접속
+sudo apt-get install openssh-server
+
+
+service  --status-all 현재 설치되어있는 서비스 리스느
+
+service ssh status : ssh의 설치 상태 조회
+
+
+ssh 설정
+1) 포트 포워드 ssh는 22번 포트
+2) 푸티 설치
+
+## 파일전송을 위한 FTP
+
+1) sudo apt-get install vsftpd
+2) service ssh status : 상태확인
+3) cmd -> ftp [ip]
+
+ftp 로컬 로그인과 업로드 권한을 위해 /etc/vsftpd.conf 파일 설정
+local_enable=YES, write_enable=YES
+
+ftp 재시작
+sudo service vsftpd restart
+
+## 이동형 USB 저장장치 마운트 하기 

@@ -516,4 +516,97 @@ local_enable=YES, write_enable=YES
 ftp 재시작
 sudo service vsftpd restart
 
-## 이동형 USB 저장장치 마운트 하기 
+## 이동형 USB 저장장치 마운트 하기
+
+virtual box 사용시 : 다운로드 페이지에서 "All platforms" 받는다
+설정 -> USB -> USB 3.0 선택 -> USB 인식하기 -> + 버튼 눌러서 가상머신에 인식하도록 추가
+
+media 폴더에서 연결하여 사용
+sudo mkdir usb
+cd usb
+lsblk : 모든 스토리지 정보 출력
+
+cd /dev (device) 경로에 블록들이 존재
+brw-rw---- 와 같은 형태로 존재
+
+sudo mount /dev/sdb1 /media/usb : media/usb로 연결하기
+
+ls /media/usb/
+
+sudo umount /media/usb : 마운트 해제하기
+
+추가 체크하기 리눅스에서 인식 못하는 포맷팅으로 진행된 USB
+
+## 톰캣 9.0 서버 설치
+
+apt 가 아닌 ftp 활용하여 설치
+
+tar.gz 확장자로 된 파일 받기
+
+tar -zxvf [아파치 파일명]
+
+/usr/local 경로에 /tomcat 디렉토리 생성하고 mv 한다
+
+/usr/local/tomcat/[아파치]/bin/startup.sh 로 실행하는데 -> $PATH 에 등록하고 사용
+
+**콘솔용 브라우저 w3m으로 테스트 가능
+
+w3m http://loaclhost:8080
+
+ps -ef | grep tomcat 으로 프로세스 구동중인지 확인 가능
+
+## 톰캣 사용자 그룹
+
+id dragon : 정보가 나온다.
+uid , gid, group
+
+sudo groupadd tomcat : 그룹 생성
+sudo usermod -a -G tomcat newlec 그룹에 유저 추가
+sudo usermod -a -G tomcat dragon
+
+sudo chown -R root:tomcat [아파치]
+
+bin 경로에서 실행시 권한 에러 나면 그룹에 대한 write 권한 줘야한다
+sudo chmod -R g+w logs/
+sudo chmod -R g+rx conf/
+
+환경변수로 등록하여 경로 없이 스타트하게 하기
+
+sudo nano /etc/environment
+
+**crtl + z 로 백그라운드 경로 확이 fg1 로 다시 실행 가능
+
+source /etc/environment
+source ~./profile
+
+echo $PATH 로 확인가능
+
+하면 어디서든 실행 가능
+
+## 기본포트를 사용자에게 제공하기 위해 80 포트로 변경 하기
+
+포트포워딩 설정으로
+호스트 포트 8080 게스트 IP 10.0.2.15 게스트 포트 8080
+호스트 포트 80 게스트 IP 10.0.2.15 게스트 포트 80
+
+server.xml 에서 80 포트로 변경
+cp server.xml server.xml.backup
+
+<connector> 설정에서 80으로 변경
+
+1024 번 이하의 포트를 사용하기 위한 인증요청
+exec authbind --deep "$PRGDIR"/"#EXECUTABLE" start "$@"
+
+sudo apt install authbind
+touch /etc/authbind/byport/80 : 인증을 원하면 파일을 하나 생성하면 된다.
+sudo chown root:tomcat /etc/authbind/byport/80 : 그룹에 권한 주기
+chmod 550 /etc/authbind/byport/80 : 권한 주기
+
+//기본적으로 authbind 를 주고 실행할떄
+exec authbind aaa.exe
+startup.sh 가장 아래 부분을
+exec authbind --deep "$PRGDIR"/"#EXECUTABLE" start "$@" 와 같이변경 한다.
+
+chgrp tomcat /etc/authbind/byport/80
+chmod 550 /etc/authbind/byport
+chown tomcat /etc/authbind/
